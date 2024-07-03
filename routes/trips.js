@@ -25,15 +25,19 @@ router.post('/', function(req, res, next) {
         // );
         console.log("#########Body Valid##################", req.body.date)
         
+
+
         Trip.find({$and: [
             { departure: new RegExp('^'+req.body.departure+'$', 'i') },
             { arrival: new RegExp('^'+req.body.arrival+'$', 'i') }, 
-            {price:{ $gte: 25, $lte:29 }},
+            {date:{ $gte: `${req.body.date}T00:00:00.100+00:00`, $lte:`${req.body.date}T23:59:59.100+00:00`}},
             //{ date:{$gte: user date , $lte: user date + x heures? }}
         ]})
         .then(trips => {
             console.log(trips);
-            res.json({ result: true,trips});
+            res.json({ result: true,
+                trips,
+                });
         });
     } 
     else {
